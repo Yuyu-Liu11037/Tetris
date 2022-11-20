@@ -1,0 +1,76 @@
+\documentclass{ctexart}
+\usepackage[utf8]{inputenc}
+\usepackage{hyperref,geometry}
+\geometry{margin=1in}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=black,
+    filecolor=magenta,      
+    urlcolor=black,
+}
+
+\title{Documentation}
+\author{LIU Yuyu}
+\date{May 2022}
+
+\begin{document}
+
+\maketitle
+\tableofcontents
+
+\newpage
+\section{代码讲解}
+\subsection{Block.java}
+Serializable接口允许程序员把内存里已经实例化了的对象当成文件保存下来，比如游戏存档。
+
+
+\subsection{BlockFactory.java(存放方块)}
+列举出所有可能的方块形状：每种方块的初始形状以及3种旋转过后的形状。每种方块都由4个小正方形组成，并且都有4种旋转后的形状（目的是为了代码的统一）。
+
+
+\subsection{StartGUI.java(开始游戏这个界面)}
+\begin{enumerate}
+    \item java.awt.Window.setVisible(boolean): 显示/隐藏GUI组件。setVisible(true)方法的意思是说数据模型已经构造好了，允许JVM可以根据数据模型执行paint方法开始画图并显示到屏幕上了。（并不是显示图形，而是可以运行开始画图。要把setVisible()方法放到最后面，因为代码是按顺序执行的，如果放前面，之后添加其它组件的时候，有可能会显示不出来。）
+    \item JComboBox:下拉列表框。以下拉列表的形式显示多个选项，用户可以从下拉列表中选择一个值。
+    \begin{itemize}
+        \item DefaultComboBoxModel<>: 此类继承了AbstractListModel抽象类，实现了ComboBoxModel接口，可以很方便地做到动态更改JComboBox的项目值。
+        \item BorderLayout布局管理器将界面分为5个部分。
+    \end{itemize}
+    \item 构造方法StartGUI()：
+    \begin{itemize}
+        \item setDefaultCloseOperation(JFrame.EXIT\_ON\_CLOSE): "EXIT\_ON\_CLOSE": 点击窗口左上角时，结束应用程序，退出JVM。
+        \item setBounds(x,y,width,height):背景面板区域。
+        \item setBackground:背景颜色
+        \item setBorder:边框
+        \item setLayout: 对当前组件设置为流式布局（使用百分比设置宽高的布局，随着设备屏幕的改变，容器的宽高、位置变化）。
+        \item setContentPane(contentPane): 在JFrame对象中可以添加swing组件。JFrame不是一个容器，只是一个框架，不能直接用add方法添加组件。对JFrame添加组件的一种方法是 建立一个JPanel中间容器，把组件添加到中间容器中，用setContentPane()方法把该容器设置为JFrame的内容面板。
+    \end{itemize}
+\end{enumerate}
+
+
+\subsection{TetrisFrame.java}
+\begin{enumerate}
+    \item TetrisFrame(int level): 选择不同难度.
+    \item initScores(): 读取存档。ObjectInPutStream可用于将InputStream转化为Object, 这个过程称为反序列化。
+    \item showPause(): 暂停界面
+    \item showGameOver(): 游戏结束界面
+    \begin{itemize}
+        \item JScrollPane是一个滚动面板，只能添加一个组件，但可以添加一个面板JPanel再把很多组件添加到JPanel上。
+        \item JTable是用来显示和编辑常规的二维单元表。
+    \end{itemize}
+    \item saveScore(): 保存本次分数，结束时显示
+    \item saveProgress(): 存档
+\end{enumerate}
+
+\subsection{TetrisModel.java}
+\begin{enumerate}
+    \item 构造方法TetrisModel(): 
+    \item initialize(): 随机生成一个新的俄罗斯方块。
+    \item rotete(),toLeft(),toRight().
+    \item down(): 判断是否能继续下落，若能，下落；若不能，停止下落并去掉方块内的分割线(与可移动的方块区分)。
+    \item check(): 判断是否能消除一整行并且加分。
+    \item resetColor(): 重新生成俄罗斯方块。
+\end{enumerate}
+
+
+\end{document}
